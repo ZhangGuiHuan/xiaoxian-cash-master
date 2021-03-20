@@ -8,7 +8,7 @@
 		</view>
 		
 		<view class="u-p-20 u-flex u-flex-wrap">
-			<view class="product_item" v-for="item in 30">
+			<view class="product_item" v-for="item in 30" :key="item">
 				<u-image width="120" height="120" src="/static/notFound.png"></u-image>
 				<view class="title">
 					<view class="">商品名称</view>
@@ -17,6 +17,7 @@
 			</view>
 		</view>
 		<my-pagination :total="20"></my-pagination>
+		
 	</view>
 </template>
 
@@ -42,5 +43,6 @@
 		opacity: 0.8;
 		position: absolute;
 		bottom: 0;
+		height:600rpx;
 	}
 </style>

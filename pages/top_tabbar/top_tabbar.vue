@@ -14,16 +14,16 @@
 					{{item.name}}
 				</view>
 			</view>
-			<view class="logout" @click="showOut = true">
+			<view class="logout" @click="logout">
 				<text>退出</text>
 				<image style="width: 20px;height: 20px;" src="/static/tui.png"></image>
 			</view>
-			<u-modal v-model="showOut" content="确定要退出登录吗" show-cancel-button @confirm="logout()"></u-modal>
 		</view>
 	</view>
 </template>
 
 <script>
+	import {getUrl} from '../../utils/getUrl.js'
 	export default {
 		data() {
 			return {
@@ -49,6 +49,9 @@
 				current: 0
 			}
 		},
+		mounted() {
+			console.log( getCurrentPages())
+		},
 		methods: {
 			handleClick(data) {
 				this.current = data;
@@ -57,9 +60,18 @@
 				})
 			},
 			logout() {
-				uni.reLaunch({
-					url: '/pages/user/login'
-				})
+				uni.showModal({
+				    title: '提示',
+				    content: '确定要退出登录吗',
+				    success: function (res) {
+				        if (res.confirm) {
+				           uni.reLaunch({
+				           	url: '/pages/user/login'
+				           })
+				        }
+				    }
+				});
+				
 			}
 		}
 	}
@@ -69,6 +81,7 @@
 	.top_tabbar {
 		background: #3F56BC;
 		height: 100%;
+		min-width: 1000px;
 	}
 
 	.status_bar {
