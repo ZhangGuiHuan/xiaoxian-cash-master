@@ -55,6 +55,13 @@ module.exports = [{
 	{		"path" : "pages/staff_handover/staff_handover",
 		"style" : {
 		    "navigationBarTitleText" : "员工交接"
-		}	}
+		}	},
+	{
+		"path" : "pages/transaction/transaction",
+		"style" : {
+		    "navigationBarTitleText" : "交易查询"
+		}
+	},
+
 
 ]
