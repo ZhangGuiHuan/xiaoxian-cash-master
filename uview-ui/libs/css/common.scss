@@ -107,7 +107,15 @@ text {
 	/* #endif */
 	flex-direction: column;
 }
-
+.u-price{
+	color: #ff0000;
+	font-weight: 700;
+}
+.u-price::before{
+	content: "¥";
+	font-size: 80%;
+	margin-right: 4rpx;
+}
 // 定义flex等分
 @for $i from 0 through 12 {
 	.u-flex-#{$i} {

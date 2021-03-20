@@ -33,10 +33,8 @@ function exportPagesConfig (pagesJson={}, loader={}) {
     let pages = removeDuplicationAndSetIndexPage(
         [
             ...basePages,
-            ...hotRequire('./pages_json/index.js')
+            ...hotRequire('./pages_modules/index.js')
         ]
-        // 设置首页(可省)
-        ,'pages/index/index'
     )
 
     // 要输出的subPackages
