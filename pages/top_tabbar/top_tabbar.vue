@@ -1,19 +1,25 @@
 <template>
-	<view class="u-flex page">
-		<view class="logo-box">
-			<image src="/static/logo.png"></image>
-			<view style="letter-spacing: 10rpx;">小鲜收银台</view>
+	<view class="top_tabbar">
+		<view class="status_bar">
+			<!-- 这里是状态栏 -->
 		</view>
-		<view class="tabbar u-flex-1 u-m-r-10 u-flex">
-			<view class="tabbar_item" :class="current === index ? 'tabbar_active':''" v-for="(item,index) in list" :key="index" @click="handleClick(index)">
-				{{item.name}}
+		<view class="u-flex">
+			<view class="logo-box">
+				<image src="/static/logo.png"></image>
+				<view style="letter-spacing: 10rpx;">小鲜收银台</view>
 			</view>
+			<view class="tabbar u-flex-1 u-m-r-10 u-flex">
+				<view class="tabbar_item" :class="current === index ? 'tabbar_active':''" v-for="(item,index) in list"
+					:key="index" @click="handleClick(index)">
+					{{item.name}}
+				</view>
+			</view>
+			<view class="logout" @click="showOut = true">
+				<text>退出</text>
+				<image style="width: 20px;height: 20px;" src="/static/tui.png"></image>
+			</view>
+			<u-modal v-model="showOut" content="确定要退出登录吗" show-cancel-button @confirm="logout()"></u-modal>
 		</view>
-		<view class="logout" @click="showOut = true">
-			<text>退出</text>
-			<image style="width: 20px;height: 20px;" src="/static/tui.png"></image>
-		</view>
-		<u-modal v-model="showOut" content="确定要退出登录吗" show-cancel-button @confirm="logout()"></u-modal>
 	</view>
 </template>
 
@@ -21,9 +27,8 @@
 	export default {
 		data() {
 			return {
-				showOut:false,
-				list: [
-					{
+				showOut: false,
+				list: [{
 						name: '收银机',
 						url: '/pages/index/index'
 					},
@@ -31,7 +36,7 @@
 						name: '交易查询',
 						url: '/pages/transaction/transaction'
 					},
-					
+
 					{
 						name: '库存管理',
 						url: '/pages/warehouse/warehouse'
@@ -51,9 +56,9 @@
 					url: this.list[data].url
 				})
 			},
-			logout(){
+			logout() {
 				uni.reLaunch({
-					url:'/pages/user/login'
+					url: '/pages/user/login'
 				})
 			}
 		}
@@ -61,9 +66,14 @@
 </script>
 
 <style lang="scss" scoped>
-	.page {
+	.top_tabbar {
 		background: #3F56BC;
 		height: 100%;
+	}
+
+	.status_bar {
+		height: var(--status-bar-height);
+		width: 100%;
 	}
 
 	.logo-box {
@@ -92,13 +102,15 @@
 	image {
 		vertical-align: middle;
 	}
-	.tabbar{
+
+	.tabbar {
 		height: 50px;
 		box-sizing: border-box;
 		align-items: flex-end;
 		padding-bottom: 1px;
 	}
-	.tabbar_item{
+
+	.tabbar_item {
 		width: 150px;
 		height: 40px;
 		background: #778EF6;
@@ -108,7 +120,8 @@
 		color: #e7e7e7;
 		font-size: 14px;
 	}
-	.tabbar_active{
+
+	.tabbar_active {
 		background: #232C58 !important;
 		color: #ffffff;
 		font-weight: 700;

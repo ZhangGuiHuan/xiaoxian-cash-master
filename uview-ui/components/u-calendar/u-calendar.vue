@@ -1,5 +1,5 @@
 <template>
-	<u-popup closeable :maskCloseAble="maskCloseAble" mode="bottom" :popup="false" v-model="value" length="auto"
+	<u-popup :maskCloseAble="maskCloseAble" mode="center" :popup="false" v-model="value" length="auto"
 	 :safeAreaInsetBottom="safeAreaInsetBottom" @close="close" :z-index="uZIndex" :border-radius="borderRadius" :closeable="closeable">
 		<view class="u-calendar">
 			<view class="u-calendar__header">

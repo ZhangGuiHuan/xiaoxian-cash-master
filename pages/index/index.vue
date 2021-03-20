@@ -1,7 +1,7 @@
 <template>
 	<view class="main_box">
 		<view class="left_box">
-			<input auto-focus :focus="focus" @confirm="getCode" style="position: absolute;top: -100px;"/>
+			<input auto-focus :focus="focus" v-model="input" @confirm="getCode" style="position: absolute;top: -100px;"/>
 			<!-- <keyboard-listener @keyup="getCode"></keyboard-listener> -->
 			<view class="u-flex u-p-20 top_box">
 				<view class="u-p-r-20" style="color: #3F56BC;">
@@ -12,7 +12,8 @@
 				</view>
 				<view class="">已选：0</view>
 			</view>
-			<scroll-view scroll-y scroll-with-animation class="menu-scroll-view" show-scrollbar :scroll-top="scrollTop">
+			<scroll-view scroll-y scroll-with-animation class="menu-scroll-view" show-scrollbar 
+			:scroll-top="scrollTop">
 				<view v-for="(item,index) in list" :key="index" class="product-item">
 					<view class="product_title u-flex u-col-top">
 						<view class="u-line-2 u-flex-1">{{item.name}}</view>
@@ -28,6 +29,9 @@
 						<u-number-box v-model="item.num" color="#7084DD"></u-number-box>
 					</view>
 				</view>
+				<!-- 占位view -->
+				<view style="height: 300rpx;"></view>
+				
 			</scroll-view>
 			<view class="buttom_box">
 				<view class="u-flex u-p-b-20">
@@ -79,7 +83,7 @@
 				input:'',
 				list:[],
 				focus:false,
-				scrollTop:0,
+				scrollTop:200,
 				pagesKey:'product'//product:商品列表, member:会员, addmember:添加会员
 			}
 		},
@@ -90,8 +94,9 @@
 		},
 		methods: {
 			getCode(data){
-				this.$u.toast(data.detail.value)
-				console.log(data)
+				uni.showToast({
+					title:'扫描成功：'+data.detail.value,
+				})
 				this.scrollTop += 200
 				this.list.push({
 					name:'芝士焗龙虾5斤装',
@@ -101,6 +106,7 @@
 				})
 				this.input = ''
 			}
+			
 		}
 	}
 </script>
@@ -112,6 +118,7 @@
 		box-sizing: border-box;
 		
 	}
+	
 	.left_box{
 		width: 400px;
 		height: 100%;
@@ -122,22 +129,30 @@
 		
 	}
 	.top_box{
-		height: 50px;
+		height: 100rpx;
 		background: #DEDEDE;
 	}
 	.menu-scroll-view{
-		height: calc(100vh - 250px);
+		height: calc(100vh - 300rpx - 50px);
 		box-sizing: border-box;
 	}
 	.buttom_box{
-		height: 150px;
+		height: 200rpx;
 		padding: 20rpx;
 		background-color: #FFFFFF;
-		
+		box-sizing: border-box;
 	}
 	.product-item{
-		height: 120px;
+		height: 200rpx;
 		border-bottom: 1px #7084DD solid;
 		padding: 20rpx;
+		box-sizing: border-box;
+		animation: change 1s linear;	
 	}
+	@keyframes change {	
+			0% {
+				background-color: #beffff)
+			}
+			100% {background-color: #c4e3ff;}	
+		}
 </style>

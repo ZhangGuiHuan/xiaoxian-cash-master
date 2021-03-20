@@ -9,13 +9,16 @@
             "height" : "50px"
         }
     },
+	 "matchMedia": {
+      "minWidth": 600 //生效条件，当窗口宽度大于768px时显示
+    },
     "globalStyle" : {
         "navigationBarTextStyle" : "black",
         "navigationBarTitleText" : "uni-app",
         "navigationBarBackgroundColor" : "#F8F8F8",
         "backgroundColor" : "#F8F8F8",
-        "rpxCalcMaxDeviceWidth" : 960,
-        "rpxCalcBaseDeviceWidth" : 450,
+        "rpxCalcMaxDeviceWidth" : 800,
+        "rpxCalcBaseDeviceWidth" : 430,
         "rpxCalcIncludeWidth" : 750,
         "app-plus" : {
             "bounce" : "none" //关闭窗口回弹效果

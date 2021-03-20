@@ -27,6 +27,7 @@
 	.search{
 		padding: 10rpx;
 		background-color: #E1E6FE;
+		height: 100rpx;
 	}
 	.product{
 		

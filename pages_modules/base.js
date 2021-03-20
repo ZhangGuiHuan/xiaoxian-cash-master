@@ -59,7 +59,8 @@ module.exports = [{
 	{
 		"path" : "pages/transaction/transaction",
 		"style" : {
-		    "navigationBarTitleText" : "交易查询"
+		    "navigationBarTitleText" : "交易查询",
+			"navigationStyle": "custom"
 		}
 	},
 
