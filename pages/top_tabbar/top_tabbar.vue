@@ -16,7 +16,7 @@
 			</view>
 			<view class="logout" @click="logout">
 				<text>退出</text>
-				<image style="width: 20px;height: 20px;" src="/static/tui.png"></image>
+				<image style="width: 15px;height: 15px;" src="/static/tui.png"></image>
 			</view>
 		</view>
 	</view>
@@ -49,8 +49,9 @@
 				current: 0
 			}
 		},
-		mounted() {
-			console.log( getCurrentPages())
+		onShow() {
+			console.log(111)
+			console.log(getCurrentPages())
 		},
 		methods: {
 			handleClick(data) {
@@ -94,21 +95,22 @@
 		line-height: 50px;
 		font-weight: bold;
 		color: #c5e6ff;
-		font-size: 25px;
+		font-size: 22px;
 		display: flex;
 		align-items: center;
 		padding-left: 20px;
 	}
 
 	.logo-box image {
-		width: 32px;
-		height: 32px;
+		width: 28px;
+		height: 28px;
 		margin-right: 20px;
 	}
 
 	.logout {
 		color: #FFFFFF;
 		letter-spacing: 5px;
+		padding-right: 10px;
 	}
 
 	.logout text,
