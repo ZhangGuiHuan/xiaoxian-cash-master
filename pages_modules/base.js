@@ -14,6 +14,7 @@ module.exports = [{
 		"style": {
 			"navigationBarTitleText": "收银系统首页",
 			"navigationStyle": "custom",
+			"topWindow":true,
 			"app-plus": {
 				"titleNView": false
 			}

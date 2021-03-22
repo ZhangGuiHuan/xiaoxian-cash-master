@@ -88,6 +88,22 @@
             "splashscreen" : {
                 "androidStyle" : "common"
             }
+        },
+        "nativePlugins" : {
+            "felix-scan" : {
+                "__plugin_info__" : {
+                    "name" : "USB扫码枪原生插件",
+                    "description" : "USB扫码枪扫码原生插件完美版，后台亦可运行",
+                    "platforms" : "Android",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=3744",
+                    "android_package_name" : "xiaoxian.cach",
+                    "ios_bundle_id" : "",
+                    "isCloud" : true,
+                    "bought" : 1,
+                    "pid" : "3744",
+                    "parameters" : {}
+                }
+            }
         }
     },
     /* 快应用特有相关 */

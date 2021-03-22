@@ -35,7 +35,7 @@
 	}
 	.product{
 		background: #ebf7ff;
-		height: calc(100vh - 50px);
+		min-height: calc(100vh - 50px);
 	}
 	.product_item{
 		width: 250rpx;
