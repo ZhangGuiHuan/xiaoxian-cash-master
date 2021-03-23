@@ -20,13 +20,7 @@ module.exports = [{
 			}
 		}
 	},
-	{
-		"path": "pages/user/forget",
-		"style": {
-			"navigationBarTitleText": "忘记密码",
-			"topWindow":false
-		}
-	},
+	
 	{
 		"path": "pages/404/404",
 		"style": {
@@ -44,18 +38,21 @@ module.exports = [{
 	{
 	    "path" : "pages/top_tabbar/top_tabbar",
 	    "style" : {
-	        "navigationBarTitleText" : "顶部菜单"
+	        "navigationBarTitleText" : "顶部菜单",
+			"navigationStyle": "custom"
 	    }
 	},
 	{
 	    "path" : "pages/warehouse/warehouse",
 	    "style" : {
-	        "navigationBarTitleText" : "库存管理"
+	        "navigationBarTitleText" : "库存管理",
+			"navigationStyle": "custom"
 	    }
 	},
 	{		"path" : "pages/staff_handover/staff_handover",
 		"style" : {
-		    "navigationBarTitleText" : "员工交接"
+		    "navigationBarTitleText" : "员工交接",
+			"navigationStyle": "custom"
 		}	},
 	{
 		"path" : "pages/transaction/transaction",
