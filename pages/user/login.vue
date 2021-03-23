@@ -6,17 +6,20 @@
 			<view class="form">
 				<view class="form_title">用户登录</view>
 				<u-form :model="form" ref="form" :rules="rule" label-width="50" style="margin: 0 auto;">
-					<u-form-item prop="username" label=" " left-icon="account" style="background: white;padding: 5px 10px;">
-						<u-input v-model="form.username" maxlength="20" trim  placeholder="请输入账号"
-						 confirm-type="next" @confirm="focus = true" />
+					<u-form-item prop="account_number" label=" " left-icon="account"
+						style="background: white;padding: 5px 10px;">
+						<u-input v-model="form.account_number" maxlength="20" trim placeholder="请输入账号" confirm-type="next"
+							@confirm="focus = true" />
 					</u-form-item>
-					<u-form-item prop="password" label=" " left-icon="lock" style="background: white;padding: 5px 10px;margin-top: 20px;">
-						<u-input v-model="form.password" maxlength="20" type="password" trim  placeholder="请输入密码" confirm-type="next"
-						 @confirm="startLogin" />
+					<u-form-item prop="password" label=" " left-icon="lock"
+						style="background: white;padding: 5px 10px;margin-top: 20px;">
+						<u-input v-model="form.password" maxlength="20" type="password" trim placeholder="请输入密码"
+							confirm-type="next" @confirm="startLogin" />
 					</u-form-item>
 				</u-form>
 				<view class="u-p-t-30">
-					<u-button type="primary" @click="startLogin" :loading="loading" style="letter-spacing: 10px;font-weight: bold;">登 录</u-button>
+					<u-button type="primary" @click="startLogin" :loading="loading"
+						style="letter-spacing: 10px;font-weight: bold;">登 录</u-button>
 				</view>
 			</view>
 		</view>
@@ -29,7 +32,7 @@
 		data() {
 			return {
 				form: {
-					username: 'admin', //用户/电话
+					account_number: '15088164854', //用户/电话
 					password: '123456', //密码
 				},
 				focus: false,
@@ -37,7 +40,7 @@
 				menulist: [],
 				url: '',
 				rule: {
-					username: [{
+					account_number: [{
 						required: true,
 						message: '账号不能为空',
 						trigger: ['change', 'blur'],
@@ -46,7 +49,7 @@
 						required: true,
 						message: '密码不能为空',
 						trigger: ['change', 'blur'],
-					} ],
+					}],
 				}
 			};
 		},
@@ -74,19 +77,28 @@
 					url: url
 				})
 			},
-
+			//登陆
 			startLogin() {
-			
 				uni.hideKeyboard();
 				this.$refs.form.validate(valid => {
 					if (valid) {
 						this.loading = true;
-						uni.navigateTo({
-							url:'../index/index'
-						})
+						this.$u.post('/login/login',this.form).then(res => {
+							this.loading = false;
+							this.$u.toast('登录成功！')
+							console.log(res)
+							this.$u.vuex('vuex_uuid', res.uuid);
+							this.$u.vuex('vuex_nick_name', res.nick_name);
+							uni.redirectTo({
+								url:'../index/index'
+							})
+						}).catch(e=>{
+							this.$u.toast(e.data)
+							this.loading = false;
+						});
 					}
 				})
-				
+
 			},
 		}
 	};
@@ -97,32 +109,35 @@
 		background-image: url(/static/login_back.png);
 		background-repeat: no-repeat;
 		background-size: 100% 100%;
-		height: 100vh;
+		min-height: 100vh;
 		width: 100%;
 		display: flex;
 		justify-content: center;
 	}
+
 	.login-box {
-		padding-top: 150px;
+		padding-top: 160rpx;
 	}
+
 	.title_des {
-		font-size: 44px;
+		font-size: 60rpx;
 		font-weight: bold;
 		color: #3F56BC;
-		line-height: 44px;
 		text-align: center;
-		letter-spacing: 10px;
+		letter-spacing: 20rpx;
 	}
-	.title_des_en{
-		font-size: 20px;
+
+	.title_des_en {
+		font-size: 24rpx;
 		font-weight: 400;
 		color: #6984f9;
-		line-height: 44px;
 		text-align: center;
 		letter-spacing: 4px;
+		padding-bottom: 50rpx;
 	}
-	.form{
-		width: 800rpx;
+
+	.form {
+		width: 600rpx;
 		padding: 20px;
 		background-color: #e8eff9;
 		opacity: 0.8;
@@ -130,15 +145,16 @@
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
-	
 
-	
-	.form_title{
-		font-size: 25px;
+
+
+	.form_title {
+		font-size: 40rpx;
 		font-weight: 600;
 		text-align: center;
 		padding-bottom: 20px;
 	}
+
 	.footer {
 		font-size: 28rpx;
 		color: #9db1c5;

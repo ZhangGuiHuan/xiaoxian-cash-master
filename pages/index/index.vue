@@ -2,8 +2,8 @@
 	<view class="main_box">
 		<view class="left_box">
 			<!-- <input auto-focus :focus="focus" v-model="input" @confirm="getCode"
-				style="position: absolute;top: -100px;" />
-			<keyboard-listener @keyup="getKeyCode"></keyboard-listener> -->
+				style="position: absolute;top: -100px;" /> -->
+			<keyboard-listener @keyup="getKeyCode"></keyboard-listener>
 			<view class="left_field_box">
 				<view class="u-p-20 top_box">
 					{{barcode}}
@@ -96,7 +96,7 @@
 			//this.focus = true
 			this.pagesKey = data.pagesKey || 'product';
 			uni.hideKeyboard()
-			console.log("onLoad");
+			/* console.log("onLoad");
 			if (scan == undefined) {
 				console.log("scan:undefined");
 			} else {
@@ -110,7 +110,7 @@
 				//初始化插件
 				scan.initUsb();
 				console.log("scan init:ok");
-			}
+			} */
 		},
 		methods: {
 			getCode(data) {
@@ -146,7 +146,7 @@
 				});
 			},
 			getKeyCode(data) {
-				console.log('getKeyCode', data)
+				console.log('getKeyCode', data.key)
 			},
 			//扫码回调 "barcode":"100008961578"
 			onUsbBarcode(e) {

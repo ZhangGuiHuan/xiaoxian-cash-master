@@ -1,6 +1,8 @@
 <template>
 	<view class="u-table" :style="[tableStyle]">
-		<slot />
+		<scroll-view :scroll-x="true">
+			<slot />
+		</scroll-view>
 	</view>
 </template>
 
@@ -39,7 +41,7 @@
 			// 字体大小
 			fontSize: {
 				type: [String, Number],
-				default: 28
+				default: 24
 			},
 			// 字体颜色
 			color: {

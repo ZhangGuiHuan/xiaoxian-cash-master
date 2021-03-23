@@ -758,11 +758,11 @@
 
 <style scoped lang="less">
 	@normal-color: #606266;      //正常情况下的字体颜色
-	@hover-color: #c0c4cc;       //边框的颜色
+	@hover-color: rgb(220, 223, 230);       //边框的颜色
 	@active-color: #409eff;       //活动的颜色
 	@mouse-move-color: #f5f7fa;  //在列表项上按下时的列表项的背景色
 	@padding-left: 20px;           //两侧的边距
-	@arrowWidth: 50px;            //右边的小三角按钮区域的宽度
+	@arrowWidth: 50rpx;            //右边的小三角按钮区域的宽度
 
 	.placeholder11{
 		color: red; top: 10px;
@@ -790,13 +790,14 @@
 		color: @normal-color;
 		display: inline-block;
 		font-size: inherit;
-		height: 2.8em;
+		height: 74rpx;
 		line-height: inherit;
 		outline: none;
 		padding: 0 @arrowWidth 0 @padding-left;
 		transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-		width: 200px;
+		width: 200rpx;
 		position: relative;
+		margin:10rpx;
 		.input{
 			width: 100%; height: 100%; 
 			display: flex; align-items: center; justify-content: flex-start;

@@ -57,10 +57,12 @@
 		flex-direction: column;
 		flex: 1;
 		justify-content: center;
-		font-size: 28rpx;
+		font-size: 26rpx;
 		color: $u-content-color;
 		align-self: stretch;
 		box-sizing: border-box;
-		height: 100%;
+		min-height: 80rpx;
+		overflow: hidden;
+		word-break: break-all;
 	}
 </style>

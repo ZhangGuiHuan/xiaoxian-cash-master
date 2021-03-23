@@ -18,12 +18,34 @@
 				</view>
 			</view>
 		</view>
-		<my-pagination :total="20" :page="1"></my-pagination>
-		
+		<my-pagination :page.sync="homepageItem" :total="count" @change="getList"></my-pagination>
 	</view>
 </template>
 
 <script>
+	export default {
+		data() {
+			return {
+				showPopup:false,
+				homepageItem:1,
+				count:0
+			}
+		},
+		mounted() {
+			this.getList(1)
+		},
+		methods: {
+			//商品列表
+			getList(homepageItem){
+				this.homepageItem = homepageItem;
+				this.$u.get('/goods/goodsList',{homepageItem}).then(res=>{
+					
+				}).catch(()=>{
+					this.$u.toast('加载失败')
+				})
+			}
+		}
+	}
 </script>
 
 <style scoped>

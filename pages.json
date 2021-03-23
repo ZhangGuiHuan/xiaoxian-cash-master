@@ -10,7 +10,7 @@
         }
     },
 	 "matchMedia": {
-      "minWidth": 300 //生效条件，当窗口宽度大于600时显示
+      "minWidth": 600 //生效条件，当窗口宽度大于768px时显示
     },
     "globalStyle" : {
         "navigationBarTextStyle" : "black",
