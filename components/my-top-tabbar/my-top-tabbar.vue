@@ -15,12 +15,13 @@
 						{{item.name}}
 					</view>
 				</view>
-				<view class="logout" @click="logout">
+				<view class="logout" @click="showOut = true">
 					<text>退出</text>
 					<image style="width: 15px;height: 15px;" src="/static/tui.png"></image>
 				</view>
 			</view>
 		</view>
+		<u-modal v-model="showOut" show-cancel-button content="确定要退出登录吗" @confirm="logout()"></u-modal>
 	</view>
 </template>
 
@@ -67,18 +68,9 @@
 				})
 			},
 			logout() {
-				uni.showModal({
-				    title: '提示',
-				    content: '确定要退出登录吗',
-				    success: function (res) {
-				        if (res.confirm) {
-				           uni.reLaunch({
-				           	url: '/pages/user/login'
-				           })
-				        }
-				    }
-				});
-				
+				uni.reLaunch({
+					url: '/pages/user/login'
+				})
 			}
 		}
 	}
@@ -89,7 +81,7 @@
 		height: calc(var(--status-bar-height) + 50px);
 	}
 	.top_tabbar {
-		background: #3F56BC;
+		background-image: linear-gradient(to top, #244a8b 0%, #254b8e 1%, #3161b3 100%);
 		height: calc(var(--status-bar-height) + 50px);
 		width: 100%;
 		min-width: 800px;
@@ -142,8 +134,8 @@
 	.tabbar_item {
 		width: 200rpx;
 		height: 40px;
-		background: #778EF6;
-		border-radius: 8px 8px 0px 0px;
+		background-image: linear-gradient(-225deg, #1D8FE1 0%, #1a86d3 48%, #076ece 100%);
+		border-radius: 30rpx 10rpx 0px 0px;
 		text-align: center;
 		line-height: 40px;
 		color: #e7e7e7;

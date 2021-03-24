@@ -3,13 +3,11 @@
 		<my-top-tabbar :current="0"></my-top-tabbar>
 		<view class="main_box">
 			<view class="left_box">
-				<!-- <input auto-focus :focus="focus" v-model="input" @confirm="getCode"
-					style="position: absolute;top: -100px;" /> -->
-				<keyboard-listener @keyup="getKeyCode"></keyboard-listener>
 				<view class="left_field_box">
-					<view class="u-p-l-20 u-p-r-20 top_box">
-						<u-icon name="scan"></u-icon>
-						<text>{{barcode ? barcode :'请使用扫描枪录入条码'}}</text>
+					<view class="top_box">
+						<!-- <input auto-focus :focus="focus" placeholder="请使用扫描枪录入条码" v-model="barcode" @confirm="getCode"/> -->
+						<u-search auto-focus :focus="focus" v-model="barcode" placeholder="请使用扫描枪录入条码" @search="getCode"></u-search>
+						<!-- <text>{{barcode ? barcode :'请使用扫描枪录入条码'}}</text> -->
 					</view>
 					<scroll-view scroll-y scroll-with-animation class="menu-scroll-view" show-scrollbar
 						:scroll-top="scrollTop">
@@ -93,9 +91,9 @@
 			}
 		},
 		mounted(data) {
-			//this.focus = true
+			this.focus = true;
+			uni.hideKeyboard()
 			//this.pagesKey = data.pagesKey || 'product';
-			this.getCode(6934024590169)
 			// #ifdef  APP-PLUS
 			if(scan){
 				//var main = plus.android.runtimeMainActivity();
@@ -124,12 +122,14 @@
 		methods: {
 			//查询商品
 			getCode(data) {
+				if(!data) return false;
 				if(this.loading){
 					this.$u.toast('操作太频繁,请稍等')
 					return false;
 				}else{
 					this.loading = true
 				}
+				this.barcode = data
 				//检查重复
 				let exit = false;
 				this.productList.forEach(item=>{
@@ -151,7 +151,14 @@
 					this.loading = false;
 				}).catch(() => {
 					this.loading = false;
-					this.$u.toast('查询失败')
+					uni.showModal({
+						content:'没有找到商品！',
+						showCancel:false,
+						success() {
+							this.focus = true;
+							uni.hideKeyboard()
+						}
+					})
 				})
 			},
 			changeNumber(data){
@@ -178,15 +185,11 @@
 					}
 				});
 			},
-			getKeyCode(data) {
-				console.log('getKeyCode', data.key)
-				//this.getCode(data.key)
-			},
 			//扫码回调 "barcode":"100008961578"
 			onUsbBarcode(e) {
 				this.barcode = e.barcode;
 				console.log('onBarcode:' + JSON.stringify(e));
-				this.getCode(e.barcode)
+				//this.getCode(e.barcode)
 			}
 
 		}
@@ -225,8 +228,9 @@
 
 	.top_box {
 		height: 100rpx;
+		background: #5069cd;
+		color: white;
 		line-height: 100rpx;
-		background: #DEDEDE;
 	}
 
 	.menu-scroll-view {
@@ -254,6 +258,7 @@
 
 	.product_title {
 		min-height: 70rpx;
+		color: #37478c;
 	}
 
 	@keyframes change {
