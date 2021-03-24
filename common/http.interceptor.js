@@ -7,13 +7,12 @@ const install = (Vue, vm) => {
 		// 设置为true后，就需要在this.$u.http.interceptor.response进行多一次的判断，请打印查看具体值
 		// originalData: true, 
 		// 设置自定义头部content-type
-		// header: {
-		// 	'content-type': 'xxx'
-		// }
+		header: {
+			'content-type': 'application/x-www-form-urlencoded'
+		}
 	});
 	// 请求拦截，配置Token等参数
 	Vue.prototype.$u.http.interceptor.request = (config) => {
-		config.header['Content-Type'] = 'application/x-www-form-urlencoded'
 		// 方式一，存放在vuex的token，假设使用了uView封装的vuex方式，见：https://uviewui.com/components/globalVariable.html
 		// config.header.token = vm.token;
 		
@@ -29,7 +28,7 @@ const install = (Vue, vm) => {
 		//删除传参 空key
 		let param = config.data
 		for (let key in param) {
-		    if(param[key] == '' ||param[key] === null){
+		    if(param[key] == '' || param[key] === null){
 				delete param[key]
 			}
 		}

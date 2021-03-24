@@ -1,32 +1,34 @@
 <template>
-	<view class="main-box u-flex u-col-top">
-		<view class="left-box">
-			<my-menu :current="current" :menu="menu" @change="handleClick"></my-menu>
-		</view>
-		<view class="rigth-box">
-			<addProduct v-if="pageKey ==='addProduct'"></addProduct>
-			<!-- <bank-flow  v-if="pageKey ==='bankFlow'"></bank-flow>
-			<order-detail v-if="pageKey ==='orderDetail'"></order-detail> -->
+	<view>
+		<my-top-tabbar :current="2"></my-top-tabbar>
+		<view class="main-box u-flex u-col-top">
+		<!-- 	<view class="left-box">
+				<my-menu :current="current" :menu="menu" @change="handleClick"></my-menu>
+			</view> -->
+			<view class="rigth-box">
+				<addProduct v-if="pageKey ==='addProduct'"></addProduct>
+				<productList  v-if="pageKey ==='productList'"></productList>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
 	import addProduct from './components/add-product.vue'
-	/* import orderDetail from './components/order-detail.vue'
-	import bankFlow from './components/bank-flow.vue' */
+	import productList from './components/product-list.vue'
 	export default {
 		components: {
+			productList,
 			addProduct
 		},
 		data() {
 			return {
 				menu:[
+					{name:'库存明细',pageKey:'productList'},
 					{name:'商品录入',pageKey:'addProduct'},
-					{name:'库存明细',pageKey:'bankFlow'},
 				],
 				current:0,
-				pageKey:'addProduct'
+				pageKey:'productList'
 			}
 		},
 		methods: {

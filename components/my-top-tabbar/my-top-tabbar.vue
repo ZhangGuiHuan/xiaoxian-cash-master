@@ -1,22 +1,24 @@
 <template>
-	<view class="top_tabbar">
-		<view class="status_bar">
-			<!-- 这里是状态栏 -->
-		</view>
-		<view class="u-flex">
-			<view class="logo-box">
-				<image src="/static/logo.png"></image>
-				<view style="letter-spacing: 10rpx;">小鲜收银台</view>
+	<view class="top_tabbar_box">
+		<view class="top_tabbar">
+			<view class="status_bar">
+				<!-- 这里是状态栏 -->
 			</view>
-			<view class="tabbar u-flex-1 u-m-r-10 u-flex">
-				<view class="tabbar_item" :class="current === index ? 'tabbar_active':''" v-for="(item,index) in list"
-					:key="index" @click="handleClick(index)">
-					{{item.name}}
+			<view class="u-flex">
+				<view class="logo-box">
+					<image src="/static/logo.png"></image>
+					<view style="letter-spacing: 10rpx;">小鲜收银台</view>
 				</view>
-			</view>
-			<view class="logout" @click="logout">
-				<text>退出</text>
-				<image style="width: 15px;height: 15px;" src="/static/tui.png"></image>
+				<view class="tabbar u-flex-1 u-m-r-10 u-flex">
+					<view class="tabbar_item" :class="current === index || curRoute === item.url ? 'tabbar_active':''" v-for="(item,index) in list"
+						:key="index" @click="handleClick(index)">
+						{{item.name}}
+					</view>
+				</view>
+				<view class="logout" @click="logout">
+					<text>退出</text>
+					<image style="width: 15px;height: 15px;" src="/static/tui.png"></image>
+				</view>
 			</view>
 		</view>
 	</view>
@@ -25,9 +27,16 @@
 <script>
 	import {getUrl} from '../../utils/getUrl.js'
 	export default {
+		props:{
+			current:{
+				type:Number,
+				default:0
+			}
+		},
 		data() {
 			return {
 				showOut: false,
+				curRoute:'',
 				list: [{
 						name: '收银机',
 						url: '/pages/index/index'
@@ -46,16 +55,13 @@
 						url: '/pages/staff_handover/staff_handover'
 					}
 				],
-				current: 0
 			}
 		},
-		onShow() {
-			console.log(111)
-			console.log(getCurrentPages())
-		},
+		
 		methods: {
 			handleClick(data) {
-				this.current = data;
+				//this.current = data;
+				//this.$u.vuex('vuex_tabbar_current',data)
 				uni.navigateTo({
 					url: this.list[data].url
 				})
@@ -79,10 +85,18 @@
 </script>
 
 <style lang="scss" scoped>
+	.top_tabbar_box{
+		height: calc(var(--status-bar-height) + 50px);
+	}
 	.top_tabbar {
 		background: #3F56BC;
-		height: 100%;
-		min-width: 1000px;
+		height: calc(var(--status-bar-height) + 50px);
+		width: 100%;
+		min-width: 800px;
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 999999;
 	}
 
 	.status_bar {
@@ -91,7 +105,7 @@
 	}
 
 	.logo-box {
-		width: 250px;
+		width: 500rpx;
 		line-height: 50px;
 		font-weight: bold;
 		color: #c5e6ff;
@@ -126,7 +140,7 @@
 	}
 
 	.tabbar_item {
-		width: 150px;
+		width: 200rpx;
 		height: 40px;
 		background: #778EF6;
 		border-radius: 8px 8px 0px 0px;

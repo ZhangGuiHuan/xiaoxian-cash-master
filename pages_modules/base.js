@@ -3,7 +3,6 @@ module.exports = [{
 		"style": {
 			"navigationBarTitleText": "登录",
 			"navigationStyle": "custom",
-			"topWindow":false,
 			"app-plus": {
 				"titleNView": false
 			}
@@ -14,7 +13,6 @@ module.exports = [{
 		"style": {
 			"navigationBarTitleText": "收银系统首页",
 			"navigationStyle": "custom",
-			"topWindow":true,
 			"app-plus": {
 				"titleNView": false
 			}
@@ -24,23 +22,9 @@ module.exports = [{
 	{
 		"path": "pages/404/404",
 		"style": {
-			"navigationBarTitleText": "404页面",
-			"topWindow":false
+			"navigationBarTitleText": "404页面"
 		}
 
-	},
-	{
-	    "path" : "pages/settlement/settlement",
-	    "style" : {
-	        "navigationBarTitleText" : "小鲜收银系统"
-	    }
-	},
-	{
-	    "path" : "pages/top_tabbar/top_tabbar",
-	    "style" : {
-	        "navigationBarTitleText" : "顶部菜单",
-			"navigationStyle": "custom"
-	    }
 	},
 	{
 	    "path" : "pages/warehouse/warehouse",

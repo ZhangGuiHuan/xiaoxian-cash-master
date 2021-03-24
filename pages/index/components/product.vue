@@ -9,8 +9,9 @@
 			</view>
 		</view>
 		
-		<view class="u-p-20 u-flex u-flex-wrap u-row-center">
-			<view class="product_item" v-for="item in 18" :key="item">
+		<view class="u-p-20 u-flex u-flex-wrap u-row-center" style="min-height: calc(100vh - 50px - 200rpx);">
+			<view v-if="productList.length === 0" class="u-m-t-50">暂无商品</view>
+			<view class="product_item" v-for="item in productList" :key="item">
 				<u-image width="250" height="250" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3174473013,3261457838&fm=26&gp=0.jpg"></u-image>
 				<view class="title">
 					<view class="u-line-3 u-font-12">商品名称 商品名称 商品名称</view>
@@ -18,7 +19,7 @@
 				</view>
 			</view>
 		</view>
-		<my-pagination :page.sync="homepageItem" :total="count" @change="getList"></my-pagination>
+		<my-pagination v-show="count>0"  :page.sync="homepageItem"  :total="count" @change="getList"></my-pagination>
 	</view>
 </template>
 
@@ -28,7 +29,8 @@
 			return {
 				showPopup:false,
 				homepageItem:1,
-				count:0
+				count:0,
+				productList:[]
 			}
 		},
 		mounted() {
@@ -39,7 +41,8 @@
 			getList(homepageItem){
 				this.homepageItem = homepageItem;
 				this.$u.get('/goods/goodsList',{homepageItem}).then(res=>{
-					
+					this.productList = res.tydGoods;
+					this.count = res.count;
 				}).catch(()=>{
 					this.$u.toast('加载失败')
 				})

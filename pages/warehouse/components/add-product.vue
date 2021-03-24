@@ -3,8 +3,9 @@
 		<view class="title">
 			商品录入
 		</view>
-		<view class="u-p-50" style="max-width: 700px; margin: 0 auto;">
-			<u-form ref="form" :model="form" label-width="200">
+		<view class="u-p-50 u-text-center" style="max-width: 700px; margin: 0 auto;">
+			<text>暂不支持</text>
+			<!-- <u-form ref="form" :model="form" label-width="200">
 				<u-form-item label="条码编号 :" prop="code">
 					<u-input focus border placeholder="请输入条码编号" v-model="form.code"></u-input>
 				</u-form-item>
@@ -33,8 +34,9 @@
 					<u-upload ref="uUpload" :auto-upload="false"></u-upload>
 				</u-form-item>
 				<u-button type="primary" :loading="loading" @click="handleAdd">添加</u-button>
-			</u-form>
+			</u-form> -->
 		</view>
+		<u-modal v-model="showModel" :content="content"></u-modal>
 	</view>
 </template>
 
@@ -42,6 +44,8 @@
 	export default {
 		data() {
 			return {
+				showModel:false,
+				content:'',
 				loading:false,
 				typeList: [{
 					name: '日用品'
@@ -99,7 +103,7 @@
 					marketingPrice: [{
 							required: true,
 							message: '请输入零售价',
-							trigger: ['change', 'blur'],
+							trigger: ['blur'],
 						},
 						{
 							validator: (rule, value, callback) => {
@@ -113,7 +117,7 @@
 			}
 		},
 		mounted() {
-			this.$refs.form.setRules(this.rule);
+			//this.$refs.form.setRules(this.rule);
 		},
 		methods: {
 			handleAdd() {
@@ -123,9 +127,11 @@
 						this.loading = true;
 						this.$u.post('/goods/inventoryList',this.form).then(res => {
 							this.loading = false;
-							this.$u.toast('录入成功！')
+							this.content = res;
+							this.showModel = true
+							this.$refs.form.resetFields()
 						}).catch(e=>{
-							this.$u.toast(e.data)
+							this.$u.toast(e)
 							this.loading = false;
 						});
 					}

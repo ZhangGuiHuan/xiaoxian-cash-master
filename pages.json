@@ -3,15 +3,6 @@
         "^u-(.*)" : "@/uview-ui/components/u-$1/u-$1.vue",
 		"^my-(.*)" : "@/components/my-$1/my-$1.vue"
     },
-    "topWindow" : {
-        "path" : "pages/top_tabbar/top_tabbar", // 指定 topWindow 页面文件
-        "style" : {
-            "height" : "50px"
-        }
-    },
-	 "matchMedia": {
-      "minWidth": 600 //生效条件，当窗口宽度大于768px时显示
-    },
     "globalStyle" : {
         "navigationBarTextStyle" : "black",
         "navigationBarTitleText" : "uni-app",
