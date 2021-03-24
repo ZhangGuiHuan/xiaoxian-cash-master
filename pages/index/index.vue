@@ -5,7 +5,7 @@
 			<view class="left_box">
 				<!-- <input auto-focus :focus="focus" v-model="input" @confirm="getCode"
 					style="position: absolute;top: -100px;" /> -->
-				<!-- <keyboard-listener @keyup="getKeyCode"></keyboard-listener> -->
+				<keyboard-listener @keyup="getKeyCode"></keyboard-listener>
 				<view class="left_field_box">
 					<view class="u-p-l-20 u-p-r-20 top_box">
 						<u-icon name="scan"></u-icon>
@@ -13,7 +13,7 @@
 					</view>
 					<scroll-view scroll-y scroll-with-animation class="menu-scroll-view" show-scrollbar
 						:scroll-top="scrollTop">
-						<view v-for="(item,index) in vuex_settlement_productList" :key="index" class="product-item">
+						<view v-for="(item,index) in productList" :key="index" class="product-item">
 							<view class="product_title u-flex u-col-top">
 								<view class="u-line-2 u-flex-1">{{item.goodsName}}</view>
 								<!-- 删除按钮 -->
@@ -88,12 +88,14 @@
 				list: [],
 				focus: false,
 				scrollTop: 0,
-				pagesKey: 'product' //product:商品列表, member:会员
+				pagesKey: 'product', //product:商品列表, member:会员
+				productList:uni.getStorageSync('productList')||[]
 			}
 		},
 		mounted(data) {
 			//this.focus = true
 			//this.pagesKey = data.pagesKey || 'product';
+			this.getCode(6934024590169)
 			// #ifdef  APP-PLUS
 			if(scan){
 				//var main = plus.android.runtimeMainActivity();
@@ -128,12 +130,22 @@
 				}else{
 					this.loading = true
 				}
+				//检查重复
+				let exit = false;
+				this.productList.forEach(item=>{
+					if(data != '' && data == item.code){
+						item.number ++;
+						exit = true
+						this.$u.toast('商品已存在')
+					}
+				})
+				if (exit) return false;
 				this.$u.get('/goods/findGoodsByCode', {code:data}).then(res => {
-					let list = this.vuex_settlement_productList || [];
+					let list = this.productList;
 					let productData = res;
 					productData.number = 1;
-					list.push(productData)
-					this.$u.vuex('vuex_settlement_productList', list);
+					this.productList.push(productData)
+					uni.setStorageSync('productList',this.productList)
 					this.barcode = '';
 					this.scrollTop += 200;
 					this.loading = false;
@@ -143,6 +155,7 @@
 				})
 			},
 			changeNumber(data){
+				uni.setStorageSync('productList',this.productList)
 				//console.log(data)
 			},
 			payfun(key) {
@@ -150,17 +163,17 @@
 				
 			},
 			deletePro(item, index) {
-				let list = this.vuex_settlement_productList || [];
+				let list = this.productList;
 				let _this = this;
 				uni.showModal({
 					title: '提示',
-					content: '确定要删除： ' + item.name + ' 吗',
+					content: '确定要删除： ' + item.goodsName + ' 吗',
 					confirmText: '确定删除',
 					confirmColor: '#FA3534',
 					success: function(res) {
 						if (res.confirm) {
-							list.splice(index, 1)
-							this.$u.vuex('vuex_settlement_productList', list);
+							_this.productList.splice(index, 1)
+							uni.setStorageSync('productList',_this.productList)
 						}
 					}
 				});
