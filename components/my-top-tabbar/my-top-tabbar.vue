@@ -39,7 +39,7 @@
 				showOut: false,
 				curRoute:'',
 				list: [{
-						name: '收银机',
+						name: '收银台',
 						url: '/pages/index/index'
 					},
 					{
@@ -105,6 +105,7 @@
 		display: flex;
 		align-items: center;
 		padding-left: 20px;
+		overflow: hidden;
 	}
 
 	.logo-box image {

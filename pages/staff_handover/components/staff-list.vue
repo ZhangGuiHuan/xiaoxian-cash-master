@@ -1,7 +1,8 @@
 <template>
 	<view class="content">
 		<view class="title">
-			员工列表
+			<view class="u-flex-1">员工列表</view>
+			<u-button type="primary" size="mini" @click="addStaff">录入员工</u-button>
 		</view>
 		<view>
 			<u-table>
@@ -43,7 +44,7 @@
 				count: 0,
 				search:'',
 				form: {
-					tydUuid : this.vuex_uuid
+					tydUuid : ''
 				}
 			}
 		},
@@ -55,9 +56,10 @@
 				this.current = data;
 				this.getList(1)
 			},
-			//员工列表/staff/staffList
+			//员工列表
 			getList(homepageItem) {
-				this.$u.get('/goods/inventoryList', this.form).then(res => {
+				
+				this.$u.post('/staff/staffList', {tydUuid:this.vuex_uuid}).then(res => {
 					this.productList = res.tydGoods;
 					this.count = res.count
 				}).catch(() => {
@@ -65,6 +67,9 @@
 				})
 				
 			},
+			addStaff(){
+				this.$emit('addStaff')
+			}
 		}
 	}
 </script>
@@ -74,6 +79,7 @@
 		.title {
 			background: #E1E6FE;
 			padding: 20rpx;
+			display: flex;
 		}
 
 	}

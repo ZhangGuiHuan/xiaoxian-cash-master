@@ -5,7 +5,7 @@
     },
     "globalStyle" : {
         "navigationBarTextStyle" : "black",
-        "navigationBarTitleText" : "uni-app",
+        "navigationBarTitleText" : "小鲜收银",
         "navigationBarBackgroundColor" : "#F8F8F8",
         "backgroundColor" : "#F8F8F8",
         "rpxCalcMaxDeviceWidth" : 800,

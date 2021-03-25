@@ -6,8 +6,9 @@
 				<my-menu :current="current" :menu="menu" @change="handleClick"></my-menu>
 			</view>
 			<view class="rigth-box">
-				<staffList v-if="pageKey ==='staffList'"></staffList>
+				<staffList @addStaff="addStaff" v-if="pageKey ==='staffList'"></staffList>
 				<handover v-if="pageKey ==='handover'"></handover>
+				<addStaff v-if="pageKey ==='addStaff'"></addStaff>
 			</view>
 		</view>
 	</view>
@@ -16,10 +17,12 @@
 <script>
 	import staffList from './components/staff-list.vue'
 	import handover from './components/handover.vue'
+	import addStaff from './components/add-staff.vue'
 	export default {
 		components: {
 			staffList,
-			handover
+			handover,
+			addStaff
 		},
 		data() {
 			return {
@@ -35,6 +38,9 @@
 			handleClick(current,data){
 				this.current = current;
 				this.pageKey = data.pageKey;
+			},
+			addStaff(){
+				this.pageKey = 'addStaff';
 			}
 		}
 	}

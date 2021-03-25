@@ -93,7 +93,7 @@
 								url:'../index/index'
 							})
 						}).catch(e=>{
-							this.$u.toast(e.data)
+							this.$u.toast(e.data || '网络错误')
 							this.loading = false;
 						});
 					}

@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="title">
-			交接班
+			录入员工
 		</view>
 		<view class="u-p-50" style="max-width: 500px; margin: 0 auto;">
 			<u-form ref="form" :model="form" label-width="200">
@@ -69,18 +69,18 @@
 			this.$refs.form.setRules(this.rule);
 		},
 		methods: {
-			//交接班
+			//录入员工
 			handleAdd() {
 				this.$refs.form.validate(valid => {
 					if (valid) {
 						this.loading = true;
-						this.$u.post('/staff/handover', this.form).then(res => {
+						this.$u.post('/staff/addStaff', this.form).then(res => {
 							this.loading = false;
 							this.content = res;
 							this.showModel = true
 							this.$refs.form.resetFields()
 						}).catch(e => {
-							this.$u.toast('交接失败')
+							this.$u.toast('录入失败')
 							this.loading = false;
 						});
 					}
