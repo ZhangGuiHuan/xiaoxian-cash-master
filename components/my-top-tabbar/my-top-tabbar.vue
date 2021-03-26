@@ -16,7 +16,7 @@
 					</view>
 				</view>
 				<view class="logout" @click="showOut = true">
-					<text>退出</text>
+					<text>{{vuex_nick_name || '退出'}}</text>
 					<image style="width: 15px;height: 15px;" src="/static/tui.png"></image>
 				</view>
 			</view>

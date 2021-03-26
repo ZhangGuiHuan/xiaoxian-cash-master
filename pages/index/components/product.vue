@@ -4,9 +4,14 @@
 			<view class="u-p-r-20">
 				零售商品
 			</view>
-			<view class="" style="width: 900rpx;">
-				<u-search placeholder="输入商品名称，编码，或商品条形码查询"></u-search>
-			</view>
+			<u-search
+				placeholder="输入品名，货号，条码查询" 
+				v-model="search"
+				@search="getList" 
+				shape="squre"
+				:action-style="{background:'#3F56BC',color:'white',padding:'12rpx',width:'100rpx'}"
+				>
+			</u-search>
 		</view>
 		
 		<view class="u-p-20 u-flex u-flex-wrap u-row-center" style="min-height: calc(100vh - 50px - 200rpx);">
@@ -30,7 +35,8 @@
 				showPopup:false,
 				homepageItem:1,
 				count:0,
-				productList:[]
+				productList:[],
+				search:'',
 			}
 		},
 		mounted() {
@@ -59,7 +65,7 @@
 		box-sizing: border-box;
 	}
 	.product{
-		background: #ebf7ff;
+		background: #f6fdff;
 		min-height: calc(100vh - 50px);
 	}
 	.product_item{

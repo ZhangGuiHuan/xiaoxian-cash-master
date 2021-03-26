@@ -1,29 +1,33 @@
 <template>
 	<view class="content">
 		<view class="title">
-			交接班
+			销售报表
 		</view>
-		<view class="u-p-50" style="max-width: 500px; margin: 0 auto;">
-			<u-form ref="form" :model="form" label-width="200">
-				<u-form-item label="工 号 :" prop="jobNumber">
-					<u-input border placeholder="请输入工号" v-model="form.jobNumber"></u-input>
-				</u-form-item>
-				<u-form-item label="手机号码 :" prop="phone">
-					<u-input border placeholder="请输入手机号码" v-model="form.phone"></u-input>
-				</u-form-item>
-				<u-form-item label="员工姓名 :" prop="realName">
-					<u-input border placeholder="请输入员工姓名" v-model="form.realName"></u-input>
-				</u-form-item>
-				<u-form-item label="性 别 :" prop="sex">
-					<u-radio-group v-model="form.sex">
-						<u-radio name="男">男</u-radio>
-						<u-radio name="女">女</u-radio>
-					</u-radio-group>
-				</u-form-item>
-				<u-button type="primary" :loading="loading" @click="handleAdd">添加</u-button>
-			</u-form>
+		<view>
+			<u-table>
+				<u-tr>
+					<u-th>序号</u-th>
+					<u-th>商品名称</u-th>
+					<u-th>货号</u-th>
+					<u-th>售出时间</u-th>
+					<u-th>数量</u-th>
+					<u-th>收银员</u-th>
+					<u-th>单价/件</u-th>
+					<u-th>合计/元</u-th>
+				</u-tr>
+				<u-tr v-for="(item,key) in salesList" :key="key">
+					<u-td>{{key+1}}</u-td>
+					<u-td>{{item.item_title}}</u-td>
+					<u-td>{{item.code}}</u-td>
+					<u-td>{{item.create_time}}</u-td>
+					<u-td>{{item.item_num}}</u-td>
+					<u-td>--</u-td>
+					<u-td>--</u-td>
+					<u-td>--</u-td>
+				</u-tr>
+			</u-table>
+			<my-pagination :page.sync="form.homepageItem" :pageSize="20" :total="count" @change="getList"></my-pagination>
 		</view>
-		<u-modal v-model="showModel" :content="content"></u-modal>
 	</view>
 </template>
 
@@ -32,64 +36,30 @@
 		data() {
 			return {
 				showModel: false,
-				content: '',
+				count: 0,
 				loading: false,
+				salesList:[],
 				form: {
-					sex:'男',
-					tydUuid :'1610021712960d032b109b36d4318'
+					homepageItem :1,
+					tydUuid :this.vuex_uuid
 				},
-				rule: {
-					jobNumber: [{
-						required: true,
-						message: '请输入工号',
-						trigger: ['change', 'blur'],
-					}],
-					phone: [{
-							required: true,
-							message: '请输入手机号码',
-							trigger: ['change', 'blur'],
-						},
-						{
-							validator: (rule, value, callback) => {
-								return this.$u.test.mobile(value);
-							},
-							message: '请输入正确的手机号码',
-							trigger: ['change', 'blur'],
-						}
-					],
-					realName: [{
-						required: true,
-						message: '请输入员工姓名',
-						trigger: ['change', 'blur'],
-					}]
-				}
 			}
 		},
 		mounted() {
-			this.$refs.form.setRules(this.rule);
+			this.form.tydUuid = this.vuex_uuid;
+			this.getList(1)
 		},
 		methods: {
-			//交接班
-			handleAdd() {
-				this.$refs.form.validate(valid => {
-					if (valid) {
-						this.loading = true;
-						this.$u.post('/staff/handover', this.form).then(res => {
-							this.loading = false;
-							this.content = res;
-							this.showModel = true
-							this.$refs.form.resetFields()
-						}).catch(e => {
-							this.$u.toast('交接失败')
-							this.loading = false;
-						});
-					}
-				})
-			},
-			// checkbox选择发生变化
-			checkboxGroupChange(e) {
-				console.log(e)
-				this.form.type = e.toString();
+			//销售列表
+			getList(page) {
+				this.form.homepageItem = page
+				this.$u.get('/staff/salesList', this.form).then(res => {
+					this.salesList = res.orderProducts;
+					this.count = res.count
+				}).catch(e => {
+					this.$u.toast('加载失败')
+					this.loading = false;
+				});
 			},
 		}
 	}

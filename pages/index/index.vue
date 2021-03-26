@@ -13,12 +13,11 @@
 					<scroll-view scroll-y scroll-with-animation class="menu-scroll-view" show-scrollbar
 						:scroll-top="scrollTop">
 						<view class="u-tips-color tips-box" v-if="productList.length == 0">
-							<image src="/static/notFound.png"></image>
-							<view class="tips-box-text">请录入商品</view>
+							<image src="/static/notFound.png" mode="aspectFit"></image>
 						</view>
 						<view v-for="(item,index) in productList" :key="index" class="product-item">
 							<view class="product_title u-flex u-col-top">
-								<view class="u-line-2 u-flex-1">{{item.goodsName}}</view>
+								<view class="u-line-2 u-flex-1">{{index+1}}# {{item.goodsName}}</view>
 								<!-- 删除按钮 -->
 								<u-icon name="close-circle" class="u-m-t-10" @click="deletePro(item,index)"></u-icon>
 							</view>
@@ -33,38 +32,41 @@
 							</view>
 						</view>
 						<!-- 占位view -->
-						<view style="height: 300rpx;"></view>
+						<view style="height: 200rpx;"></view>
 		
 					</scroll-view>
 					<view class="buttom_box">
 						<view class="u-flex">
-							<view class="u-flex-1 u-p-b-20">
-								导购员：A
+							<view class="u-flex-1 u-p-b-20 u-p-l-20">
+								导 购 员 ：{{vuex_nick_name}}
 							</view>
 							
-							<view class="">
+							<view class="u-p-r-20">
 								应 收：<text class="u-price">{{totalAmount}}</text>
 							</view>
 						</view>
 						<view class="u-flex u-p-b-20">
-							<view class="u-flex-1 u-p-b-20">
-								打印小票 
+							<view class="u-flex-1 u-flex u-p-b-20">
+								<view class="u-p-r-20 u-p-l-20">
+									打印小票
+								</view>
+								<u-checkbox name="1" v-model="print"></u-checkbox>
 							</view>
-							<view class="">
+							<view class="u-p-r-20">
 								实 收：<text class="u-price">{{totalAmount}}</text>
 							</view>
 						</view>
-						<view class="u-flex u-p-20">
-							<u-button style="width: 100rpx;" size="medium" type="primary" @click="payfun('member')">会员</u-button>
-							<u-button style="width: 100rpx;" size="medium" type="primary" @click="createOrder('scan')">扫码</u-button>
-							<u-button style="width: 100rpx;" size="medium" type="warning" @click="createOrder">结算</u-button>
+						<view class="u-flex u-row-between">
+							<u-button ripple size="medium" type="primary" @click="payfun('member')">会 员</u-button>
+							<u-button ripple size="medium" type="primary" @click="createOrder('scan')">扫 码</u-button>
+							<u-button ripple size="medium" icon="money" type="warning" @click="createOrder">现 金</u-button>
 						</view>
 					</view>
 				</view>
 			</view>
 			<view class="right_box">
 				<product v-if="pagesKey ==='product'"></product>
-				<member v-if="pagesKey ==='member'"></member>
+				<member v-if="pagesKey ==='member'" @change="handleClick"></member>
 				<addmember v-if="pagesKey ==='addmember'"></addmember>
 			</view>
 		</view>
@@ -107,7 +109,8 @@
 				focus: false,
 				scrollTop: 0,
 				pagesKey: 'product', //product:商品列表, member:会员
-				productList:[]
+				productList:[],
+				print:true
 			}
 		},
 		computed: {
@@ -275,7 +278,11 @@
 			clearCode(){
 				this.$refs.qrcode._clearCode();
 				this.qrcodeText = '';
-			}
+			},
+			handleClick(pagesKey){
+				console.log(pagesKey)
+				this.pagesKey = pagesKey;
+			},
 
 		}
 	}
@@ -343,7 +350,7 @@
 	.buttom_box {
 		height: 250rpx;
 		padding: 20rpx;
-		background-color: #DEDEDE;
+		background-color: #E1E6FE;
 		box-sizing: border-box;
 		overflow: hidden;
 	}
@@ -368,7 +375,6 @@
 	}
 	.tips-box image{
 		width: 300rpx;
-		height: 300rpx;
 	}
 	@keyframes change {
 		0% {

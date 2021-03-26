@@ -48,6 +48,7 @@
 		</u-popup>
 				
 		<u-button class="addmember" type="primary" size="medium" @click="showPopup = true">添加会员</u-button>
+		<u-button class="black" size="medium" @click="goblack">返回</u-button>
 	</view>
 </template>
 
@@ -59,7 +60,9 @@
 			}
 		},
 		methods: {
-			
+			goblack(){
+				this.$emit('change','product')
+			}
 		}
 	}
 </script>
@@ -78,5 +81,10 @@
 		position: absolute;
 		bottom: 50rpx;
 		right: 50rpx;
+	}
+	.black{
+		position: absolute;
+		bottom: 50rpx;
+		right: 400rpx;
 	}
 </style>

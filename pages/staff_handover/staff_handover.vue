@@ -6,7 +6,7 @@
 				<my-menu :current="current" :menu="menu" @change="handleClick"></my-menu>
 			</view>
 			<view class="rigth-box">
-				<staffList @addStaff="addStaff" v-if="pageKey ==='staffList'"></staffList>
+				<staffList v-if="pageKey ==='staffList'" @addStaff="addStaff" ></staffList>
 				<handover v-if="pageKey ==='handover'"></handover>
 				<addStaff v-if="pageKey ==='addStaff'"></addStaff>
 			</view>
@@ -26,11 +26,11 @@
 		},
 		data() {
 			return {
+				current:0,
 				menu:[
 					{name:'员工管理',pageKey:'staffList'},
-					{name:'交接班',pageKey:'handover'},
+					{name:'交接班',pageKey:'handover'}
 				],
-				current:0,
 				pageKey:'staffList'
 			}
 		},
