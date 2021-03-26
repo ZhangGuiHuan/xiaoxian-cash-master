@@ -258,13 +258,19 @@
 					this.loading = false;
 					this.productList = []
 					uni.removeStorageSync('productList')
-					let orderObj = {
-						orderId:res.orderId
-					}
+					
 					//扫码支付
 					if(payType === 'scan'){
+						let orderObj = {
+							orderId:res.orderId
+						}
 						this.qrcodeText = JSON.stringify(orderObj)
 						this.showPopup = true;
+					}else{
+						uni.showModal({
+							content:'订单已生成！',
+							showCancel:false
+						})
 					}
 				}).catch(res => {
 					this.loading = false;
