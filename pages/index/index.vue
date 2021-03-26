@@ -271,6 +271,7 @@
 							content:'订单已生成！',
 							showCancel:false
 						})
+						
 					}
 				}).catch(res => {
 					this.loading = false;
