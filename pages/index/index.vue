@@ -240,7 +240,7 @@
 					})
 				})
 			},
-			//清除二维码
+			//清除二维码ww
 			clearCode() {
 				this.$refs.qrcode._clearCode();
 				this.qrcodeText = '';
