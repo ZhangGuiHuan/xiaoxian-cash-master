@@ -15,7 +15,7 @@
 		</view>
 		
 		<view class="u-p-20 u-flex u-flex-wrap u-row-center" style="min-height: calc(100vh - 50px - 200rpx);">
-			<view v-if="productList.length === 0" class="u-m-t-50">暂无商品</view>
+			<view v-if="productList.length === 0" class="">暂无商品</view>
 			<view class="product_item" v-for="item in productList" :key="item">
 				<u-image width="250" height="250" src="https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3174473013,3261457838&fm=26&gp=0.jpg"></u-image>
 				<view class="title">

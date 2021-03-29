@@ -15,9 +15,13 @@
 						{{item.name}}
 					</view>
 				</view>
+				<view class="u-m-r-40" @click="fullScreen">
+					<image v-if="fullscreen" style="width: 40rpx;height: 40rpx;" src="/static/max.png" mode="aspectFit"></image>
+					<image v-else style="width: 40rpx;height: 40rpx;" src="/static/mini.png" mode="aspectFit"></image>
+				</view>
 				<view class="logout" @click="showOut = true">
 					<text>{{vuex_nick_name || '退出'}}</text>
-					<image style="width: 15px;height: 15px;" src="/static/tui.png"></image>
+					<image style="width: 15px;height: 15px;" src="/static/tui.png" mode="aspectFit"></image>
 				</view>
 			</view>
 		</view>
@@ -26,6 +30,7 @@
 </template>
 
 <script>
+	import screenfull from 'screenfull';
 	import {getUrl} from '../../utils/getUrl.js'
 	export default {
 		props:{
@@ -37,6 +42,7 @@
 		data() {
 			return {
 				showOut: false,
+				fullscreen: true,// 控制全屏
 				curRoute:'',
 				list: [{
 						name: '收银台',
@@ -71,6 +77,15 @@
 				uni.reLaunch({
 					url: '/pages/user/login'
 				})
+			},
+			 // 点击全屏展示
+			fullScreen() {
+			  if (!screenfull.isEnabled) {
+			    this.$u.toast('你的浏览器不支持全屏');
+			    return false;
+			  }
+			  screenfull.toggle();
+			  this.fullscreen = screenfull.isFullscreen;
 			}
 		}
 	}

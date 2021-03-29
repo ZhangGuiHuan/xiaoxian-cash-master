@@ -1,13 +1,14 @@
 <template>
 	<view>
 		<my-top-tabbar :current="0"></my-top-tabbar>
+		<keyboard-listener @keyup="keyboardEvent"></keyboard-listener>
 		<view class="main_box">
 			<view class="left_box">
 				<view class="left_field_box">
 					<view class="top_box">
 						<u-icon name="scan" size="38"></u-icon>
-						<input class="code_input" :disabled="loading" auto-focus :focus="focus" 
-						placeholder="请使用扫描枪录入条码" placeholder-style="color:#c9cde2" v-model="barcode" @confirm="getCode"/>
+						<input class="code_input" :disabled="loading" placeholder="请使用扫描枪录入条码"
+							placeholder-style="color:#c9cde2" v-model="barcode" @confirm="getInputCode" />
 						<u-icon v-show="barcode != ''" name="close-circle" @click="barcode = ''"></u-icon>
 					</view>
 					<scroll-view scroll-y scroll-with-animation class="menu-scroll-view" show-scrollbar
@@ -28,19 +29,21 @@
 								<view class="u-price u-flex-1">
 									{{item.marketingPrice}}
 								</view>
-								<u-number-box v-model="item.number" :min="1" :max="999" color="#7084DD" @change="changeNumber"></u-number-box>
+								<u-number-box v-model="item.number" :min="1" :max="999" color="#7084DD"
+									@change="changeNumber"></u-number-box>
 							</view>
 						</view>
+
 						<!-- 占位view -->
-						<view style="height: 200rpx;"></view>
-		
+						<view style="height: 400rpx;"></view>
+
 					</scroll-view>
 					<view class="buttom_box">
 						<view class="u-flex">
 							<view class="u-flex-1 u-p-b-20 u-p-l-20">
 								导 购 员 ：{{vuex_nick_name}}
 							</view>
-							
+
 							<view class="u-p-r-20">
 								应 收：<text class="u-price">{{totalAmount}}</text>
 							</view>
@@ -59,7 +62,8 @@
 						<view class="u-flex u-row-between">
 							<u-button ripple size="medium" type="primary" @click="payfun('member')">会 员</u-button>
 							<u-button ripple size="medium" type="primary" @click="createOrder('scan')">扫 码</u-button>
-							<u-button ripple size="medium" icon="money" type="warning" @click="createOrder">现 金</u-button>
+							<u-button ripple size="medium" icon="money" type="warning" @click="createOrder">现 金
+							</u-button>
 						</view>
 					</view>
 				</view>
@@ -70,18 +74,14 @@
 				<addmember v-if="pagesKey ==='addmember'"></addmember>
 			</view>
 		</view>
-		
-		<u-modal v-model="showPopup" title="订单二维码"  width="430px" @confirm="clearCode">
+
+		<u-modal v-model="showPopup" title="订单二维码" width="430px" @confirm="clearCode">
 			<view class=" u-m-20 u-text-center">
-				<tki-qrcode
-				   ref="qrcode"
-				   :val="qrcodeText"
-				   :size="400"
-				   :loadMake="true" />
+				<tki-qrcode ref="qrcode" :val="qrcodeText" :size="400" :loadMake="true" />
 				<text class="u-font-14 u-tips-color">请使用APP扫码完成支付</text>
 			</view>
 		</u-modal>
-		
+
 	</view>
 </template>
 
@@ -90,9 +90,9 @@
 	import product from './components/product.vue';
 	import member from './components/member.vue';
 	import tkiQrcode from "@/components/tki-qrcode/tki-qrcode.vue";
-	// #ifdef  APP-PLUS
-		//const scan = uni.requireNativePlugin('felix-scan-module');
-	//#endif
+	var code = '';
+	var lastTime, nextTime;
+	var lastCode, nextCode;
 	export default {
 		components: {
 			keyboardListener,
@@ -102,15 +102,16 @@
 		},
 		data() {
 			return {
-				loading:false,
-				showPopup:false,
-				qrcodeText:'',
+				loading: false,
+				showPopup: false,
+				qrcodeText: '',
 				barcode: '',
 				focus: false,
 				scrollTop: 0,
 				pagesKey: 'product', //product:商品列表, member:会员
-				productList:[],
-				print:true
+				productList: [],
+				print: true,
+				barcode1: ''
 			}
 		},
 		computed: {
@@ -124,98 +125,62 @@
 			},
 		},
 		onLoad(data) {
-			this.productList = uni.getStorageSync('productList')||[];
-			this.focus = true;
-			uni.hideKeyboard()
-			//this.pagesKey = data.pagesKey || 'product';
-			// #ifdef  APP-PLUS
-			/* if(scan){
-				//var main = plus.android.runtimeMainActivity();
-				uni.showModal({
-				    title: '提示',
-				    content: '收银机需要开启辅助功能,请前往开启',
-				    success: function (res) {
-				        if (res.confirm) {
-				           console.log("scan:ok");
-				           //定义监听
-				           var globalEvent = uni.requireNativePlugin('globalEvent');
-				           //监听插件回调事件
-				           globalEvent.addEventListener('onUsbBarcode', this.onUsbBarcode);
-				           console.log("scan addEventListener:ok");
-				           //初始化插件
-				           scan.initUsb();
-				           console.log("scan init:ok");
-				        }
-				    }
-				});
-			}else{
-				this.$u.toast('扫描枪插件加载失败')
-			} */
-			//#endif
+			this.productList = uni.getStorageSync('productList') || [];
 		},
 		methods: {
+			//手动输入
+			getInputCode(data){
+				//console.log(data)
+				this.getCode(data.detail.value)
+			},
 			//查询商品
-			getCode(data) {
-				if(!data.detail.value) return false;
-				if(this.loading){
+			getCode(barCode) {
+				if (!barCode) return false;
+				if (this.loading) {
 					this.$u.toast('操作太频繁,请稍等')
 					this.barcode = '';
-					this.focus = true;
-					uni.hideKeyboard();
 					return false;
-				}else{
+				} else {
 					this.loading = true
 				}
-				//console.log(data)
-				this.barcode = data.detail.value;
 				//检查重复
-				let exit = false;
-				this.productList.forEach(item=>{
-					if(data.detail.value != '' && data.detail.value == item.code){
-						item.number ++;
-						exit = true
-						this.$u.toast('商品已存在')
+				for (var i = 0; i < this.productList.length; i++) {
+					if (barCode == this.productList[i].code) {
+						this.productList[i].number++;
+						this.$u.toast('商品已存在');
 						this.loading = false;
-						this.barcode = '';
-						this.focus = true;
-						uni.hideKeyboard();
+						setTimeout(()=>{
+							this.barcode = '';
+						},1000)
+						return;
 					}
-				})
-				if (exit) return false;
-				this.$u.get('/goods/findGoodsByCode', {code:data.detail.value}).then(res => {
+				}
+				this.$u.get('/goods/findGoodsByCode', {
+					code: barCode
+				}).then(res => {
 					this.loading = false;
 					let list = this.productList;
 					let productData = res;
 					productData.number = 1;
 					this.productList.push(productData)
-					uni.setStorageSync('productList',this.productList)
-					this.barcode = '';
+					uni.setStorageSync('productList', this.productList)
 					this.scrollTop += 200;
+					this.barcode = '';
+					code = '';
 				}).catch(() => {
-					let _this = this;
 					this.loading = false;
 					this.$u.toast('没有找到商品')
-					_this.barcode = '';
-					_this.focus = true;
-					uni.hideKeyboard();
-					/* uni.showModal({
-						content:'没有找到商品！',
-						showCancel:false,
-						success() {
-							_this.barcode = '';
-							_this.focus = true;
-							uni.hideKeyboard();
-						}
-					}) */
+					setTimeout(()=>{
+						this.barcode = '';
+					},1000)
 				})
+
 			},
-			changeNumber(data){
-				uni.setStorageSync('productList',this.productList)
-				//console.log(data)
+			changeNumber(data) {
+				uni.setStorageSync('productList', this.productList)
 			},
 			payfun(key) {
 				this.pagesKey = key
-				
 			},
 			deletePro(item, index) {
 				let list = this.productList;
@@ -228,22 +193,14 @@
 					success: function(res) {
 						if (res.confirm) {
 							_this.productList.splice(index, 1)
-							uni.setStorageSync('productList',_this.productList)
+							uni.setStorageSync('productList', _this.productList)
 						}
 					}
 				});
 			},
-			//扫码回调 "barcode":"100008961578"
-			onUsbBarcode(e) {
-				this.barcode = e.barcode;
-				console.log('onBarcode:' + JSON.stringify(e));
-				//this.getCode(e.barcode)
-			},
-			
-			
 			//生成订单
-			createOrder(payType){
-				if(this.productList.length == 0){
+			createOrder(payType) {
+				if (this.productList.length == 0) {
 					return false;
 				}
 				this.loading = true;
@@ -254,43 +211,65 @@
 					orderlist[key] = number;
 				}
 				orderlist = JSON.stringify(orderlist)
-				this.$u.post('/order/addOrderInfo', {orderlist}).then(res => {
+				this.$u.post('/order/addOrderInfo', {
+					orderlist
+				}).then(res => {
 					this.loading = false;
 					this.productList = []
 					uni.removeStorageSync('productList')
-					
+
 					//扫码支付
-					if(payType === 'scan'){
+					if (payType === 'scan') {
 						let orderObj = {
-							orderId:res.orderId
+							orderId: res.orderId
 						}
 						this.qrcodeText = JSON.stringify(orderObj)
 						this.showPopup = true;
-					}else{
+					} else {
 						uni.showModal({
-							content:'订单已生成！',
-							showCancel:false
+							content: '订单已生成！',
+							showCancel: false
 						})
-						
+
 					}
 				}).catch(res => {
 					this.loading = false;
 					uni.showModal({
-						content:res.data,
-						showCancel:false
+						content: res.data,
+						showCancel: false
 					})
 				})
 			},
 			//清除二维码
-			clearCode(){
+			clearCode() {
 				this.$refs.qrcode._clearCode();
 				this.qrcodeText = '';
 			},
-			handleClick(pagesKey){
+			handleClick(pagesKey) {
 				console.log(pagesKey)
 				this.pagesKey = pagesKey;
 			},
+			//检测扫码枪输入还是手动输入
+			keyboardEvent(keyEvent) {
+				if(isNaN(keyEvent.key) && keyEvent.key !== 'Enter'){
+					return false;
+				}
+				nextCode = keyEvent.key;
+				nextTime = new Date().getTime();
+				if (lastCode != null && lastTime != null && nextTime - lastTime   <= 300) {
+					code += lastCode;
+				} else if (lastCode != null &&	lastTime != null && nextTime - lastTime > 300) {
+					code = '';
+				}
+				lastCode = nextCode;
+				lastTime = nextTime;
+				if(keyEvent.key === 'Enter' && code){
+					console.log(this.barcode)
+					this.barcode = code;
+					this.getCode(code);
+				}
 
+			}
 		}
 	}
 </script>
@@ -337,7 +316,8 @@
 		align-items: center;
 		color: #123671;
 	}
-	.code_input{
+
+	.code_input {
 		margin: 0 20rpx;
 		flex: 1;
 		border: 1px #c9cde2 solid;
@@ -345,21 +325,27 @@
 		border-radius: 5rpx;
 		background: rgb(248, 248, 248);
 	}
+
 	.code_input:focus {
-		outline:none;
-	    border: 1px solid red;
+		outline: none;
+		border: 1px solid red;
 	}
+
 	.menu-scroll-view {
 		height: calc(100vh - 350rpx - 50px);
 		box-sizing: border-box;
 	}
 
 	.buttom_box {
+		width: 699rpx;
 		height: 250rpx;
 		padding: 20rpx;
 		background-color: #E1E6FE;
 		box-sizing: border-box;
 		overflow: hidden;
+		position: fixed;
+		bottom: 0;
+		left: 0;
 	}
 
 	.product-item {
@@ -376,13 +362,16 @@
 		min-height: 70rpx;
 		color: #37478c;
 	}
-	.tips-box{
+
+	.tips-box {
 		text-align: center;
 		margin-top: 100rpx;
 	}
-	.tips-box image{
+
+	.tips-box image {
 		width: 300rpx;
 	}
+
 	@keyframes change {
 		0% {
 			background-color: #ffffff)

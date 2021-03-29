@@ -41,7 +41,7 @@
 					</u-td>
 				</u-tr>
 			</u-table>
-			<my-pagination :page.sync="form.homepageItem" :pageSize="10" :total="count" @change="getList"></my-pagination>
+			<my-pagination :page.sync="form.homepageItem" :pageSize="20" :total="count" @change="getList"></my-pagination>
 		</view>
 	</view>
 </template>
